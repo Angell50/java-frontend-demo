@@ -44,14 +44,17 @@ jobs:
     - name: Install Vercel CLI
       run: npm install -g vercel
 
-    # 7. Despliegue a Vercel (condicional si la construcción fue exitosa)
+    # 7. Desactivar telemetría de Vercel
+    - name: Disable Vercel Telemetry
+      run: vercel telemetry disable
+
+    # 8. Despliegue a Vercel
     - name: Deploy to Vercel
-      if: ${{ success() }}
       run: vercel --prod --yes
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-    # 8. Verificación del despliegue
+    # 9. Verificación del despliegue
     - name: Verify deployment
       if: ${{ success() }}
       run: vercel inspect --prod
